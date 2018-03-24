@@ -1,8 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import ReduxPromise from "redux-promise";
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import reducers from './reducers';
+
+import Page from './containers/Page';
+import Home from './components/Home';
+
+const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+
+
+ReactDOM.render(<Provider store={createStoreWithMiddleware(reducers)}>
+    <Router>
+        <Switch>
+            <Route path="/page" component={Page} />
+            <Route path="/" component={Home} />
+        </Switch>
+    </Router>
+</Provider>, document.getElementById('root'));
